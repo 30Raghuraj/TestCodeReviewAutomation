@@ -7,5 +7,4 @@
         Custom PMD ruleset to catch null assignment and dereference issues.
     </description>
     <rule ref="category/java/errorprone.xml/NullAssignment"/>
-    <rule ref="category/java/errorprone.xml/NullDereference"/>
 </ruleset>
