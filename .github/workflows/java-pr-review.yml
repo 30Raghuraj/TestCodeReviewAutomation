@@ -50,6 +50,9 @@ jobs:
 
       - name: Convert SpotBugs XML to text format
         run: |
+          if [ ! -s target/spotbugsXml.xml ]; then
+            echo "target/spotbugsXml.xml is missing or empty!"; ls -l target; exit 1;
+          fi
           xsltproc pmd/xsl/spotbugs.xsl target/spotbugsXml.xml > spotbugs.out
           if [ ! -s spotbugs.out ]; then
             echo "spotbugs.out is missing or empty!"; cat target/spotbugsXml.xml; exit 1;
