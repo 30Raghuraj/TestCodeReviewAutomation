@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0  
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.example</groupId>
+  <artifactId>TestCodeReviewAutomation</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <build>
+    <plugins>
+      <!-- SpotBugs Plugin -->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.7.3.0</version>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals><goal>spotbugs</goal></goals>
+          </execution>
+        </executions>
+        <configuration>
+          <failOnError>false</failOnError>
+          <xmlOutput>true</xmlOutput>
+          <xmlOutputDirectory>${project.build.directory}</xmlOutputDirectory>
+        </configuration>
+      </plugin>
+
+      <!-- PMD Plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.15.0</version>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals><goal>pmd</goal></goals>
+          </execution>
+        </executions>
+        <configuration>
+          <failOnViolation>false</failOnViolation>
+          <printFailingErrors>true</printFailingErrors>
+          <outputFormat>xml</outputFormat>
+          <outputDirectory>${project.build.directory}</outputDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+	<pluginManagement>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+    </plugins>
+  </pluginManagement>
+  </build>
+</project>
