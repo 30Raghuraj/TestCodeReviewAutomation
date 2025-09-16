@@ -45,17 +45,31 @@ jobs:
             -level=warning < pmd.out
 
       # Run SpotBugs
+      - name: Compile Java sources
+        run: mvn compile
+
       - name: Run SpotBugs
         run: mvn com.github.spotbugs:spotbugs-maven-plugin:spotbugs
 
+      - name: List SpotBugs output files
+        run: |
+          echo "Listing files in target directory after SpotBugs:"
+          ls -l target
+
       - name: Convert SpotBugs XML to text format
         run: |
-          if [ ! -s target/spotbugsXml.xml ]; then
-            echo "target/spotbugsXml.xml is missing or empty!"; ls -l target; exit 1;
+          # Use the correct SpotBugs output file
+          if [ -s target/spotbugsXml.xml ]; then
+            xsltproc pmd/xsl/spotbugs.xsl target/spotbugsXml.xml > spotbugs.out
+            echo "Used target/spotbugsXml.xml"
+          elif [ -s target/spotbugs.xml ]; then
+            xsltproc pmd/xsl/spotbugs.xsl target/spotbugs.xml > spotbugs.out
+            echo "Used target/spotbugs.xml"
+          else
+            echo "No SpotBugs XML output found!"; ls -l target; exit 1;
           fi
-          xsltproc pmd/xsl/spotbugs.xsl target/spotbugsXml.xml > spotbugs.out
           if [ ! -s spotbugs.out ]; then
-            echo "spotbugs.out is missing or empty!"; cat target/spotbugsXml.xml; exit 1;
+            echo "spotbugs.out is missing or empty!"; exit 1;
           fi
           echo "spotbugs.out contents:"; cat spotbugs.out
 
