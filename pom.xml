@@ -50,6 +50,9 @@
           <printFailingErrors>true</printFailingErrors>
           <outputFormat>xml</outputFormat>
           <outputDirectory>${project.build.directory}</outputDirectory>
+          <rulesets>
+            <ruleset>${project.basedir}/pmd/custom-ruleset.xml</ruleset>
+          </rulesets>
         </configuration>
       </plugin>
     </plugins>
