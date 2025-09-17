@@ -5,6 +5,10 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
+      - name: Debug SpotBugs output
+        run: |
+          echo "SpotBugs XML output (spotbugsXml.xml):"
+          cat target/spotbugsXml.xml || echo "File not found or empty."
   code_review:
     runs-on: ubuntu-latest
 
@@ -73,10 +77,17 @@ jobs:
           fi
           echo "spotbugs.out contents:"; cat spotbugs.out
 
+      - name: Debug ReviewDog input
+        run: |
+          echo "spotbugs.out contents before ReviewDog:"; cat spotbugs.out
+
       - name: ReviewDog - SpotBugs
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          if [ ! -s spotbugs.out ]; then
+            echo "No findings for ReviewDog to post."; exit 0;
+          fi
           ./bin/reviewdog -efm="%f:%l: %m" \
             -name="SpotBugs" \
             -reporter=github-pr-review \
